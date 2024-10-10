@@ -148,7 +148,7 @@ export class CallsWidgetWindow {
             frame: false,
             transparent: true,
             show: false,
-            alwaysOnTop: true,
+            alwaysOnTop: false,
             hasShadow: false,
             backgroundColor: '#00ffffff',
             webPreferences: {
