@@ -243,7 +243,7 @@ export class CallsWidgetWindow {
 
         this.win.focus();
         this.win.setVisibleOnAllWorkspaces(true, {visibleOnFullScreen: true, skipTransformProcessType: true});
-        this.win.setAlwaysOnTop(true, 'screen-saver');
+        this.win.setAlwaysOnTop(false, 'screen-saver');
 
         const bounds = this.win.getBounds();
         const mainBounds = mainWindow.getBounds();
