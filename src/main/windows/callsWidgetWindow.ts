@@ -1,8 +1,8 @@
 // Copyright (c) 2016-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import type {IpcMainEvent, Rectangle, Event, IpcMainInvokeEvent} from 'electron';
-import {BrowserWindow, desktopCapturer, ipcMain, systemPreferences} from 'electron';
+import type { IpcMainEvent, Rectangle, Event, IpcMainInvokeEvent } from 'electron';
+import { BrowserWindow, desktopCapturer, ipcMain, systemPreferences } from 'electron';
 
 import ServerViewState from 'app/serverViewState';
 import {
@@ -24,9 +24,9 @@ import {
     GET_DESKTOP_SOURCES,
     UPDATE_SHORTCUT_MENU,
 } from 'common/communication';
-import {Logger} from 'common/log';
-import {CALLS_PLUGIN_ID, MINIMUM_CALLS_WIDGET_HEIGHT, MINIMUM_CALLS_WIDGET_WIDTH} from 'common/utils/constants';
-import {getFormattedPathName, isCallsPopOutURL, parseURL} from 'common/utils/url';
+import { Logger } from 'common/log';
+import { CALLS_PLUGIN_ID, MINIMUM_CALLS_WIDGET_HEIGHT, MINIMUM_CALLS_WIDGET_WIDTH } from 'common/utils/constants';
+import { getFormattedPathName, isCallsPopOutURL, parseURL } from 'common/utils/url';
 import Utils from 'common/utils/util';
 import PermissionsManager from 'main/permissionsManager';
 import {
@@ -35,7 +35,7 @@ import {
     openScreensharePermissionsSettingsMacOS,
     resetScreensharePermissionsMacOS,
 } from 'main/utils';
-import type {MattermostBrowserView} from 'main/views/MattermostBrowserView';
+import type { MattermostBrowserView } from 'main/views/MattermostBrowserView';
 import ViewManager from 'main/views/viewManager';
 import webContentsEventManager from 'main/views/webContentEvents';
 import MainWindow from 'main/windows/mainWindow';
@@ -105,7 +105,7 @@ export class CallsWidgetWindow {
      */
 
     public openDevTools = () => {
-        this.win?.webContents.openDevTools({mode: 'detach'});
+        this.win?.webContents.openDevTools({ mode: 'detach' });
     };
 
     getViewURL = () => {
@@ -242,8 +242,8 @@ export class CallsWidgetWindow {
         }
 
         this.win.focus();
-        this.win.setVisibleOnAllWorkspaces(true, {visibleOnFullScreen: true, skipTransformProcessType: true});
-        this.win.setAlwaysOnTop(false, 'screen-saver');
+        this.win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true, skipTransformProcessType: true });
+        this.win.setAlwaysOnTop(true, 'modal-panel');
 
         const bounds = this.win.getBounds();
         const mainBounds = mainWindow.getBounds();
@@ -264,14 +264,14 @@ export class CallsWidgetWindow {
         this.setBounds(initialBounds);
     };
 
-    private onPopOutOpen = ({url}: { url: string }) => {
+    private onPopOutOpen = ({ url }: { url: string }) => {
         if (!(this.mainView && this.options)) {
-            return {action: 'deny' as const};
+            return { action: 'deny' as const };
         }
 
         const parsedURL = parseURL(url);
         if (!parsedURL) {
-            return {action: 'deny' as const};
+            return { action: 'deny' as const };
         }
         if (isCallsPopOutURL(this.mainView?.view.server.url, parsedURL, this.options?.callID)) {
             return {
@@ -283,7 +283,7 @@ export class CallsWidgetWindow {
         }
 
         log.warn(`onPopOutOpen: prevented window open to ${url}`);
-        return {action: 'deny' as const};
+        return { action: 'deny' as const };
     };
 
     private onPopOutCreate = (win: BrowserWindow) => {
@@ -355,7 +355,7 @@ export class CallsWidgetWindow {
     };
 
     private handleShareScreen = (ev: IpcMainEvent, sourceID: string, withAudio: boolean) => {
-        log.debug('handleShareScreen', {sourceID, withAudio});
+        log.debug('handleShareScreen', { sourceID, withAudio });
 
         if (this.mainView?.webContentsId !== ev.sender.id) {
             log.debug('handleShareScreen', 'blocked on wrong webContentsId');
@@ -406,7 +406,7 @@ export class CallsWidgetWindow {
             }
         }
 
-        if (!await PermissionsManager.doPermissionRequest(view.webContentsId, 'screenShare', {requestingUrl: view.view.server.url.toString(), isMainFrame: false})) {
+        if (!await PermissionsManager.doPermissionRequest(view.webContentsId, 'screenShare', { requestingUrl: view.view.server.url.toString(), isMainFrame: false })) {
             throw new Error('permissions denied');
         }
 
@@ -481,7 +481,7 @@ export class CallsWidgetWindow {
                 }
 
                 ipcMain.off(CALLS_JOINED_CALL, connected);
-                resolve({callID: msg.callID, sessionID: incomingSessionId});
+                resolve({ callID: msg.callID, sessionID: incomingSessionId });
             };
             ipcMain.on(CALLS_JOINED_CALL, connected);
         });
