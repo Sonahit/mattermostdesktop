@@ -2,11 +2,11 @@
 // Copyright (c) 2016-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import type {BrowserView, BrowserWindow, ContextMenuParams, Event} from 'electron';
-import type {Options} from 'electron-context-menu';
+import type { BrowserView, BrowserWindow, ContextMenuParams, Event } from 'electron';
+import type { Options } from 'electron-context-menu';
 import electronContextMenu from 'electron-context-menu';
 
-import {parseURL} from 'common/utils/url';
+import { parseURL } from 'common/utils/url';
 
 const defaultMenuOptions = {
     shouldShowMenu: (e: Event, p: ContextMenuParams) => {
@@ -52,7 +52,7 @@ export default class ContextMenu {
     reload = () => {
         this.dispose();
 
-        const options = {window: this.view, ...this.menuOptions};
+        const options = { window: this.view, ...this.menuOptions };
         this.menuDispose = electronContextMenu(options);
     };
 }

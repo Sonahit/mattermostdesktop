@@ -224,6 +224,13 @@ export class CallsWidgetWindow {
         delete this.win;
         delete this.mainView;
         delete this.options;
+        const main = MainWindow.get()
+        if (!main) {
+            return
+        }
+
+        main.off("blur", this.handleMainHide);
+        main.off("focus", this.handleMainShow);
     };
 
     private onNavigate = (ev: Event, url: string) => {
@@ -234,6 +241,16 @@ export class CallsWidgetWindow {
         ev.preventDefault();
     };
 
+    private handleMainHide = () => {
+        this.win?.blur()
+        this.win?.setAlwaysOnTop(false, 'screen-saver');
+    }
+
+    private handleMainShow = () => {
+        this.win?.setAlwaysOnTop(true, 'screen-saver');
+        this.win?.focus()
+    }
+
     private onShow = () => {
         log.debug('onShow');
         const mainWindow = MainWindow.get();
@@ -243,8 +260,9 @@ export class CallsWidgetWindow {
 
         this.win.focus();
         this.win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true, skipTransformProcessType: true });
-        this.win.setParentWindow(mainWindow)
-        this.win.setAlwaysOnTop(true, 'screen-saver');
+        mainWindow
+            .on("blur", this.handleMainHide)
+            .on("focus", this.handleMainShow)
 
         const bounds = this.win.getBounds();
         const mainBounds = mainWindow.getBounds();
