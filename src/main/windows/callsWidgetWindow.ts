@@ -243,7 +243,8 @@ export class CallsWidgetWindow {
 
         this.win.focus();
         this.win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true, skipTransformProcessType: true });
-        this.win.setAlwaysOnTop(true, 'modal-panel');
+        this.win.setParentWindow(mainWindow)
+        this.win.setAlwaysOnTop(true, 'screen-saver');
 
         const bounds = this.win.getBounds();
         const mainBounds = mainWindow.getBounds();
