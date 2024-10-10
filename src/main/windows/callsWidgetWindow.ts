@@ -248,7 +248,6 @@ export class CallsWidgetWindow {
 
     private handleMainShow = () => {
         this.win?.setAlwaysOnTop(true, 'screen-saver');
-        this.win?.focus()
     }
 
     private onShow = () => {
